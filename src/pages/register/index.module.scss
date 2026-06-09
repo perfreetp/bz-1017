@@ -385,3 +385,59 @@
     box-shadow: none;
   }
 }
+
+.resubmitHeader {
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%);
+  border: 2rpx solid #FEB2B2;
+  border-radius: $radius-lg;
+}
+
+.resubmitTitle {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: #C53030;
+  margin-bottom: $spacing-sm;
+}
+
+.resubmitDesc {
+  font-size: $font-size-sm;
+  color: #9B2C2C;
+  line-height: 1.6;
+}
+
+.lockedBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 14rpx;
+  background: #F7FAFC;
+  color: #A0AEC0;
+  font-size: 20rpx;
+  border-radius: 6rpx;
+  margin-left: 8rpx;
+}
+
+.unlockedBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 14rpx;
+  background: #F0FFF4;
+  color: #38A169;
+  font-size: 20rpx;
+  border-radius: 6rpx;
+  margin-left: 8rpx;
+}
+
+.inputReadonly {
+  background: #F7FAFC !important;
+  color: #A0AEC0 !important;
+}
+
+.pickerReadonly {
+  background: #F7FAFC !important;
+  color: #A0AEC0 !important;
+}

@@ -6,7 +6,10 @@ export default defineAppConfig({
     'pages/mine/index',
     'pages/detail/index',
     'pages/register/index',
-    'pages/team/index'
+    'pages/team/index',
+    'pages/payment/index',
+    'pages/refund/index',
+    'pages/review/index'
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -204,3 +204,12 @@
     color: $color-text-secondary;
   }
 }
+
+.btnOutlineGray {
+  background: $color-bg-page;
+  border: 1rpx solid $color-divider;
+
+  Text {
+    color: $color-text-tertiary;
+  }
+}

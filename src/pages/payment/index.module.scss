@@ -1,0 +1,336 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFF5F0 0%, #F8F9FA 300rpx);
+  padding-bottom: 200rpx;
+}
+
+.eventCard {
+  margin: 24rpx;
+  padding: 24rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(255, 107, 53, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.eventCover {
+  width: 160rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+
+.eventInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.eventTitle {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A202C;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eventMeta {
+  font-size: 24rpx;
+  color: #718096;
+  line-height: 1.6;
+}
+
+.groupTag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
+  color: #FFFFFF;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+  margin-top: 8rpx;
+}
+
+.teamTag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  background: linear-gradient(135deg, #4299E1 0%, #63B3ED 100%);
+  color: #FFFFFF;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+  margin-left: 12rpx;
+}
+
+.section {
+  margin: 0 24rpx 24rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.sectionIcon {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 12rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  margin-right: 16rpx;
+  color: #FFFFFF;
+}
+
+.sectionTitle {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1A202C;
+}
+
+.orderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 2rpx solid #F7FAFC;
+}
+
+.orderRow:last-child {
+  border-bottom: none;
+}
+
+.orderLabel {
+  font-size: 26rpx;
+  color: #718096;
+}
+
+.orderValue {
+  font-size: 26rpx;
+  color: #1A202C;
+  font-weight: 500;
+}
+
+.orderValueHighlight {
+  color: #FF6B35;
+  font-weight: 600;
+}
+
+.runnerCard {
+  padding: 20rpx;
+  background: #F7FAFC;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.runnerAvatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFE4D6 0%, #FFD4BF 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FF6B35;
+  flex-shrink: 0;
+}
+
+.runnerInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.runnerName {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1A202C;
+  margin-bottom: 4rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.leaderBadge {
+  padding: 2rpx 10rpx;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #FFFFFF;
+  font-size: 18rpx;
+  border-radius: 4rpx;
+}
+
+.runnerDetail {
+  font-size: 22rpx;
+  color: #718096;
+}
+
+.payMethodTitle {
+  font-size: 26rpx;
+  color: #4A5568;
+  margin-bottom: 20rpx;
+}
+
+.payMethodList {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.payMethodItem {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #F7FAFC;
+  border: 3rpx solid transparent;
+  border-radius: 12rpx;
+  transition: all 0.2s;
+}
+
+.payMethodItemActive {
+  background: #FFF5F0;
+  border-color: #FF6B35;
+}
+
+.payIcon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+
+.payIconWechat {
+  background: linear-gradient(135deg, #07C160 0%, #09BB07 100%);
+  color: #FFFFFF;
+}
+
+.payIconAlipay {
+  background: linear-gradient(135deg, #1677FF 0%, #1890FF 100%);
+  color: #FFFFFF;
+}
+
+.payMethodName {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1A202C;
+}
+
+.payRadio {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 3rpx solid #CBD5E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payRadioActive {
+  border-color: #FF6B35;
+}
+
+.payRadioInner {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background: #FF6B35;
+}
+
+.payNotice {
+  padding: 20rpx 24rpx;
+  background: #FFFBEB;
+  border-radius: 12rpx;
+  border: 2rpx solid #FCD34D;
+  margin-top: 20rpx;
+}
+
+.payNoticeText {
+  font-size: 24rpx;
+  color: #92400E;
+  line-height: 1.7;
+}
+
+.footerBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.footerInfo {
+  flex: 1;
+}
+
+.footerLabel {
+  font-size: 24rpx;
+  color: #718096;
+  margin-bottom: 4rpx;
+}
+
+.footerPrice {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #FF6B35;
+}
+
+.payBtn {
+  padding: 24rpx 80rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
+  color: #FFFFFF;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 24rpx rgba(255, 107, 53, 0.35);
+}
+
+.payBtn:active {
+  opacity: 0.9;
+}
+
+.payBtnDisabled {
+  background: #CBD5E0;
+  box-shadow: none;
+}
+
+.countdown {
+  text-align: center;
+  padding: 20rpx;
+  background: #FFF5F0;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.countdownText {
+  font-size: 24rpx;
+  color: #718096;
+}
+
+.countdownValue {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FF6B35;
+  margin-left: 8rpx;
+  font-family: monospace;
+}

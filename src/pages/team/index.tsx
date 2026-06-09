@@ -5,8 +5,9 @@ import classnames from 'classnames';
 import styles from './index.module.scss';
 import { mockEvents } from '../../data/events';
 import { mockUser, mockTeams, shirtSizes } from '../../data/user';
+import { useOrderStore, generateOrderNo, maskPhone, maskIdCard } from '../../store/useOrderStore';
 import { showToast, showModal, copyToClipboard, navigateTo } from '../../utils';
-import { MarathonEvent, EventGroup, TeamMember } from '../../types';
+import { MarathonEvent, EventGroup, TeamMember, RegistrationOrder } from '../../types';
 
 const generateInviteCode = (): string => {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -28,6 +29,9 @@ const TeamPage: React.FC = () => {
   const router = useRouter();
   const eventId = router.params.eventId || 'e001';
   const groupId = router.params.groupId || '';
+
+  const addOrder = useOrderStore((s) => s.addOrder);
+  const updateTeamMembers = useOrderStore((s) => s.updateTeamMembers);
 
   const event: MarathonEvent = useMemo(
     () => mockEvents.find((e) => e.id === eventId) || mockEvents[0],
@@ -206,11 +210,37 @@ const TeamPage: React.FC = () => {
       Taro.showLoading({ title: '提交中...' });
       setTimeout(() => {
         Taro.hideLoading();
-        showToast('团队报名成功', 'success');
+
+        const newOrder: RegistrationOrder = {
+          id: `o${Date.now()}`,
+          orderNo: generateOrderNo(event.id),
+          eventId: event.id,
+          eventTitle: event.title,
+          eventCover: event.coverImage,
+          groupId: group?.id || '',
+          groupName: group?.name || '',
+          amount: totalAmount,
+          status: 'pending_payment',
+          createdAt: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`,
+          runnerInfo: {
+            name: mockUser.realName,
+            idCardLast4: maskIdCard(mockUser.idCardNumber),
+            shirtSize: mockUser.shirtSize,
+            phone: maskPhone(mockUser.phone)
+          },
+          isTeamRegistration: true,
+          teamName: teamName,
+          lockedFields: []
+        };
+
+        addOrder(newOrder);
+        updateTeamMembers(newOrder.id, members.map((m) => ({ ...m, status: 'pending' as const })));
+
+        showToast('团队报名提交成功', 'success');
         setTimeout(() => {
-          Taro.switchTab({ url: '/pages/orders/index' }).catch(() => {
-            navigateTo('/pages/orders/index');
-          });
+          navigateTo(
+            `/pages/payment/index?orderId=${newOrder.id}&eventId=${event.id}&groupId=${group?.id}&mode=team&teamName=${encodeURIComponent(teamName)}&memberCount=${members.length}&totalAmount=${totalAmount}`
+          );
         }, 1500);
       }, 1500);
     }

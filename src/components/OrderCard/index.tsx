@@ -4,14 +4,11 @@ import classnames from 'classnames';
 import styles from './index.module.scss';
 import { RegistrationOrder } from '../../types';
 import StatusTag from '../StatusTag';
-import { getStatusText, navigateTo, showModal } from '../../utils';
+import { getStatusText, navigateTo } from '../../utils';
 
 interface OrderCardProps {
   order: RegistrationOrder;
-  onPay?: (orderId: string) => void;
-  onRefund?: (orderId: string) => void;
-  onUploadMaterial?: (orderId: string) => void;
-  onAssistant?: (orderId: string) => void;
+  onStatusChange?: () => void;
 }
 
 const statusTypeMap: Record<string, 'success' | 'warning' | 'error' | 'info' | 'default'> = {
@@ -27,43 +24,50 @@ const statusTypeMap: Record<string, 'success' | 'warning' | 'error' | 'info' | '
   cancelled: 'default'
 };
 
-const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onRefund, onUploadMaterial, onAssistant }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const handleCardClick = () => {
     console.log('[OrderCard] click order:', order.id);
-    // 订单详情页暂使用提示
+    navigateTo(`/pages/review/index?orderId=${order.id}`);
   };
 
   const handlePay = (e) => {
     e.stopPropagation();
-    onPay?.(order.id);
+    navigateTo(
+      `/pages/payment/index?orderId=${order.id}&eventId=${order.eventId}&groupId=${order.groupId}&mode=${order.isTeamRegistration ? 'team' : 'single'}`
+    );
   };
 
-  const handleRefund = async (e) => {
+  const handleRefund = (e) => {
     e.stopPropagation();
-    const confirmed = await showModal('申请退款', '确认申请退款吗？退款将收取30%手续费，款项将在7-15个工作日原路返回。', {
-      confirmText: '确认退款',
-      cancelText: '取消'
-    });
-    if (confirmed) {
-      onRefund?.(order.id);
-    }
+    navigateTo(`/pages/refund/index?orderId=${order.id}`);
   };
 
   const handleUpload = (e) => {
     e.stopPropagation();
-    onUploadMaterial?.(order.id);
+    navigateTo(`/pages/register/index?mode=resubmit&orderId=${order.id}`);
   };
 
   const handleAssistant = (e) => {
     e.stopPropagation();
-    onAssistant?.(order.id);
+    navigateTo(`/pages/assistant/index?orderId=${order.id}`);
+  };
+
+  const handleProgress = (e) => {
+    e.stopPropagation();
+    navigateTo(`/pages/review/index?orderId=${order.id}`);
   };
 
   const renderActions = () => {
     const actions: React.ReactNode[] = [];
 
+    actions.push(
+      <Button key="progress" className={classnames(styles.actionBtn, styles.btnOutline)} onClick={handleProgress}>
+        <Text>审核进度</Text>
+      </Button>
+    );
+
     if (order.status === 'pending_payment') {
-      actions.push(
+      actions.unshift(
         <Button key="pay" className={classnames(styles.actionBtn, styles.btnPrimary)} onClick={handlePay}>
           <Text>立即支付</Text>
         </Button>
@@ -71,7 +75,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onRefund, onUploadM
     }
 
     if (order.status === 'review_failed' && order.reviewMaterials) {
-      actions.push(
+      actions.unshift(
         <Button key="upload" className={classnames(styles.actionBtn, styles.btnPrimary)} onClick={handleUpload}>
           <Text>补件上传</Text>
         </Button>
@@ -79,7 +83,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onRefund, onUploadM
     }
 
     if (order.status === 'review_passed') {
-      actions.push(
+      actions.unshift(
         <Button key="assistant" className={classnames(styles.actionBtn, styles.btnPrimary)} onClick={handleAssistant}>
           <Text>参赛助手</Text>
         </Button>
@@ -88,7 +92,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onRefund, onUploadM
 
     if (['paid', 'pending_review', 'reviewing'].includes(order.status)) {
       actions.push(
-        <Button key="refund" className={classnames(styles.actionBtn, styles.btnOutline)} onClick={handleRefund}>
+        <Button key="refund" className={classnames(styles.actionBtn, styles.btnOutlineGray)} onClick={handleRefund}>
           <Text>申请退款</Text>
         </Button>
       );
@@ -113,9 +117,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onPay, onRefund, onUploadM
           <Text className={styles.eventTitle}>{order.eventTitle}</Text>
           <Text className={styles.groupName}>{order.groupName}</Text>
           <View className={styles.runnerInfo}>
-            <Text>{order.runnerInfo.name}</Text>
+            <Text>{order.runnerInfo?.name || '--'}</Text>
             <Text className={styles.separator}>·</Text>
-            <Text>T恤 {order.runnerInfo.shirtSize}</Text>
+            <Text>T恤 {order.runnerInfo?.shirtSize || '--'}</Text>
             {order.isTeamRegistration && (
               <>
                 <Text className={styles.separator}>·</Text>
