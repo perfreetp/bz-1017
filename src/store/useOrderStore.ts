@@ -38,14 +38,15 @@ interface OrderStore {
   addOrder: (order: RegistrationOrder) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus, extra?: Partial<RegistrationOrder>) => void;
   updateTeamMembers: (orderId: string, members: TeamMember[]) => void;
-  markOrderPaid: (orderId: string) => void;
-  submitRefund: (orderId: string, reason: string) => void;
+  markOrderPaid: (orderId: string, payMethod?: 'wechat' | 'alipay') => void;
+  submitRefund: (orderId: string, reason: string, mode?: 'full' | 'member', memberIds?: string[]) => void;
   resubmitMaterials: (orderId: string, certificateUrl?: string) => void;
   getOrderById: (orderId: string) => RegistrationOrder | undefined;
 
   addNotification: (notif: Omit<Notification, 'id' | 'createdAt' | 'isRead'>) => void;
   markNotifRead: (notifId: string) => void;
   markAllNotifsRead: () => void;
+  getNotificationsByOrderId: (orderId: string) => Notification[];
 }
 
 const generateOrderNo = (eventId: string): string => {
@@ -87,23 +88,29 @@ export const useOrderStore = create<OrderStore>()(
         }));
         const order = get().getOrderById(orderId);
         if (order) {
-          const statusTextMap: Partial<Record<OrderStatus, string>> = {
-            paid: '支付成功',
-            pending_review: '进入审核',
-            reviewing: '审核中',
-            review_passed: '审核通过',
-            review_failed: '审核未通过',
-            refund_applying: '退款申请中',
-            refunded: '已退款',
-            refund_rejected: '退款被拒绝',
-            cancelled: '已取消'
+          const statusMetaMap: Partial<Record<OrderStatus, {
+            type: 'payment' | 'review' | 'refund' | 'event' | 'resubmit';
+            text: string;
+            anchor: 'review' | 'payment' | 'refund' | 'timeline' | 'materials';
+          }>> = {
+            paid: { type: 'payment', text: '支付成功', anchor: 'payment' },
+            pending_review: { type: 'payment', text: '进入审核', anchor: 'review' },
+            reviewing: { type: 'review', text: '审核中', anchor: 'review' },
+            review_passed: { type: 'review', text: '审核通过', anchor: 'review' },
+            review_failed: { type: 'review', text: '审核未通过', anchor: 'materials' },
+            refund_applying: { type: 'refund', text: '退款申请中', anchor: 'refund' },
+            refunded: { type: 'refund', text: '已退款', anchor: 'refund' },
+            refund_rejected: { type: 'refund', text: '退款被拒绝', anchor: 'refund' },
+            cancelled: { type: 'event', text: '已取消', anchor: 'timeline' }
           };
-          if (statusTextMap[status]) {
+          const meta = statusMetaMap[status];
+          if (meta) {
             get().addNotification({
-              type: status.startsWith('refund') ? 'payment' : status.startsWith('review') ? 'review' : 'payment',
-              title: `${order.eventTitle} ${statusTextMap[status]}`,
-              content: extra?.reviewComment || `您的订单状态已更新为「${statusTextMap[status]}」`,
-              orderId
+              type: meta.type,
+              title: `${order.eventTitle} ${meta.text}`,
+              content: extra?.reviewComment || `您的订单状态已更新为「${meta.text}」`,
+              orderId,
+              anchor: meta.anchor
             });
           }
         }
@@ -161,25 +168,73 @@ export const useOrderStore = create<OrderStore>()(
       submitRefund: (orderId, reason) => {
         const order = get().getOrderById(orderId);
         if (order) {
-          const refundRecord = {
-            id: `r${Date.now()}`,
-            amount: order.amount,
-            method: 'refund' as const,
-            status: 'pending' as const,
-            refundedAt: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`,
-            remark: reason
+          const now = new Date();
+          const arrivalDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+          const expectedArrival = `${arrivalDate.getFullYear()}-${String(arrivalDate.getMonth() + 1).padStart(2, '0')}-${String(arrivalDate.getDate()).padStart(2, '0')}`;
+          const isTeamOrder = !!order.isTeamRegistration;
+          const memberCount = order.teamMemberCount || order.teamMembers?.length || 1;
+          const unitPrice = memberCount > 0 ? order.amount / memberCount : order.amount;
+
+          const refundAmountCalc = () => {
+            if (mode === 'member' && memberIds && isTeamOrder) {
+              return Math.min(
+                memberIds.length * unitPrice,
+                order.amount - (order.refundAmount || 0)
+              );
+            }
+            return order.amount - (order.refundAmount || 0);
           };
+          const refundAmount = refundAmountCalc();
+
+          const refundRecord: PaymentRecord = {
+            id: `r${Date.now()}`,
+            amount: refundAmount,
+            method: 'refund',
+            status: 'pending',
+            refundedAt: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
+            remark: reason,
+            refundMode: mode,
+            memberIds,
+            expectedArrivalDate: expectedArrival,
+            refundProgress: '提交申请 · 等待审核',
+            reviewDays: 3
+          };
+
+          let updatedMembers = order.teamMembers ? [...order.teamMembers] : undefined;
+          if (updatedMembers) {
+            updatedMembers = updatedMembers.map((m) => {
+              if (mode === 'full') {
+                return { ...m, refundStatus: 'applying' as const, refundAmount: (m.refundAmount || 0) + unitPrice };
+              }
+              if (mode === 'member' && memberIds?.includes(m.id)) {
+                return { ...m, refundStatus: 'applying' as const, refundAmount: (m.refundAmount || 0) + unitPrice };
+              }
+              return m;
+            });
+          }
+
           get().updateOrderStatus(orderId, 'refund_applying', {
             paymentRecords: [...(order.paymentRecords || []), refundRecord],
-            refundAmount: order.amount
+            refundAmount: (order.refundAmount || 0) + refundAmount,
+            teamMembers: updatedMembers
           });
         } else {
           get().updateOrderStatus(orderId, 'refund_applying');
         }
-        console.log('[Store] submitRefund:', orderId, reason);
+        console.log('[Store] submitRefund:', orderId, mode, reason, 'memberIds:', memberIds?.length);
       },
 
       resubmitMaterials: (orderId, certificateUrl) => {
+        const order = get().getOrderById(orderId);
+        if (order) {
+          get().addNotification({
+            type: 'resubmit',
+            title: `${order.eventTitle} 补件已提交`,
+            content: '您已重新提交报名资料，将再次进入审核队列',
+            orderId,
+            anchor: 'review'
+          });
+        }
         const extra: Partial<RegistrationOrder> = {};
         if (certificateUrl) {
           extra.runnerInfo = {
@@ -188,14 +243,13 @@ export const useOrderStore = create<OrderStore>()(
               idCardLast4: maskIdCard(mockUser.idCardNumber),
               shirtSize: mockUser.shirtSize,
               phone: maskPhone(mockUser.phone)
-            }),
-            ...(certificateUrl ? {} : {})
+            })
           };
         }
         get().updateOrderStatus(orderId, 'reviewing', {
           ...extra,
           reviewResult: undefined,
-          reviewComment: undefined,
+          reviewComment: certificateUrl ? '补件已上传，等待重新审核' : undefined,
           reviewMaterials: []
         });
         console.log('[Store] resubmitMaterials:', orderId);
@@ -227,6 +281,10 @@ export const useOrderStore = create<OrderStore>()(
         set((state) => ({
           notifications: state.notifications.map((n) => ({ ...n, isRead: true }))
         }));
+      },
+
+      getNotificationsByOrderId: (orderId) => {
+        return get().notifications.filter((n) => n.orderId === orderId);
       }
     }),
     {

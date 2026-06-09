@@ -341,3 +341,173 @@
   font-size: 20rpx;
   color: $color-text-tertiary;
 }
+
+/* ===== 订单切换栏 ===== */
+.orderSwitcher {
+  margin-bottom: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.switcherGroupTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: $color-text-secondary;
+  padding: 4rpx 8rpx 0 8rpx;
+}
+
+.orderTabs {
+  display: flex;
+  gap: 12rpx;
+  overflow-x: auto;
+  padding-bottom: 4rpx;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.orderTabs::-webkit-scrollbar {
+  display: none;
+}
+
+.orderTab {
+  flex-shrink: 0;
+  min-width: 200rpx;
+  max-width: 240rpx;
+  padding: 16rpx 20rpx;
+  background: #FFFFFF;
+  border: 1rpx solid $color-divider;
+  border-radius: $radius-md;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  transition: all 0.2s;
+  box-shadow: $shadow-card;
+}
+
+.orderTabOther {
+  opacity: 0.85;
+}
+
+.orderTabActive {
+  border-color: $color-primary;
+  background: rgba(255, 107, 53, 0.06);
+  box-shadow: 0 4rpx 16rpx rgba(255, 107, 53, 0.15);
+}
+
+.orderTabTitle {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.orderTabTag {
+  display: inline-flex;
+  padding: 2rpx 10rpx;
+  background: rgba(46, 134, 222, 0.12);
+  color: $color-secondary;
+  border-radius: 4rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.orderTabBib {
+  font-size: 22rpx;
+  color: $color-primary;
+  font-weight: 500;
+}
+
+.orderTabStatus {
+  font-size: 22rpx;
+  font-weight: 500;
+  &.status-pending_payment { color: #DD6B20; }
+  &.status-paid { color: #38A169; }
+  &.status-pending_review, &.status-reviewing { color: $color-secondary; }
+  &.status-review_failed { color: $color-error; }
+  &.status-refund_applying { color: #DD6B20; }
+  &.status-refunded, &.status-cancelled { color: $color-text-tertiary; }
+}
+
+/* ===== 状态卡（未通过/待支付等） ===== */
+.statusCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-lg;
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  border: 1rpx solid rgba(0,0,0,0.03);
+}
+
+.statusCardLeft {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 16rpx;
+  align-items: flex-start;
+}
+
+.statusCardIcon {
+  font-size: 52rpx;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.statusCardText {
+  flex: 1;
+  min-width: 0;
+}
+
+.statusCardTitle {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.statusCardTip {
+  font-size: 24rpx;
+  color: $color-text-secondary;
+  line-height: 1.5;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.statusCardMeta {
+  font-size: 22rpx;
+  color: $color-text-tertiary;
+  display: block;
+}
+
+.statusCardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  flex-shrink: 0;
+}
+
+.statusBtn {
+  padding: 14rpx 24rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F5E 100%);
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 500;
+  border-radius: $radius-md;
+  text-align: center;
+  min-width: 140rpx;
+  white-space: nowrap;
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 53, 0.25);
+}
+
+.statusBtnSecondary {
+  background: #FFFFFF;
+  color: $color-text-secondary;
+  border: 1rpx solid $color-divider;
+  box-shadow: none;
+}

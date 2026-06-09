@@ -305,3 +305,175 @@
   background: #CBD5E0;
   box-shadow: none;
 }
+
+.teamBadge {
+  padding: 2rpx 10rpx;
+  background: rgba(46, 134, 222, 0.1);
+  color: #2E86DE;
+  border-radius: 4rpx;
+  margin-left: 8rpx;
+  font-size: 20rpx;
+}
+
+.modeTabs {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.modeTab {
+  flex: 1;
+  padding: 20rpx;
+  background: #F8F9FA;
+  border-radius: 12rpx;
+  border: 2rpx solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  transition: all 0.2s;
+}
+
+.modeTabActive {
+  background: rgba(255, 107, 53, 0.08);
+  border-color: #FF6B35;
+}
+
+.modeTabTitle {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2D3748;
+}
+
+.modeTabActive .modeTabTitle {
+  color: #FF6B35;
+}
+
+.modeTabDesc {
+  font-size: 22rpx;
+  color: #718096;
+}
+
+.modeTabActive .modeTabDesc {
+  color: #FF8F5E;
+}
+
+.memberList {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 20rpx;
+  background: #F8F9FA;
+  border-radius: 12rpx;
+  border: 2rpx solid transparent;
+  gap: 16rpx;
+  transition: all 0.2s;
+}
+
+.memberItemActive {
+  background: rgba(255, 107, 53, 0.06);
+  border-color: #FF6B35;
+}
+
+.memberItemDisabled {
+  opacity: 0.65;
+}
+
+.memberCheckbox {
+  width: 36rpx;
+  height: 36rpx;
+  border: 3rpx solid #CBD5E0;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.memberCheckboxChecked {
+  background: #FF6B35;
+  border-color: #FF6B35;
+}
+
+.memberCheckboxDisabled {
+  background: #E2E8F0;
+  border-color: #CBD5E0;
+}
+
+.memberMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.memberName {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #2D3748;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 4rpx;
+}
+
+.leaderBadgeMini {
+  padding: 2rpx 8rpx;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #FFFFFF;
+  font-size: 18rpx;
+  border-radius: 4rpx;
+}
+
+.memberMeta {
+  font-size: 22rpx;
+  color: #718096;
+}
+
+.memberStatus {
+  flex-shrink: 0;
+}
+
+.statusRefunding {
+  color: #DD6B20;
+  font-size: 22rpx;
+  font-weight: 500;
+  background: rgba(221, 107, 32, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.statusRefunded {
+  color: #38A169;
+  font-size: 22rpx;
+  font-weight: 500;
+  background: rgba(56, 161, 105, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.statusRejected {
+  color: #E74C3C;
+  font-size: 22rpx;
+  font-weight: 500;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.statusAvail {
+  color: #3182CE;
+  font-size: 22rpx;
+  font-weight: 500;
+  background: rgba(49, 130, 206, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.infoValueGreen {
+  color: #38A169 !important;
+  font-weight: 600;
+}

@@ -1,11 +1,11 @@
 import { RegistrationOrder, Notification, RaceAssistantInfo } from '../types';
 
 const teamMembers = [
-  { id: 'tm1', name: '张*明', phone: '138****8888', status: 'paid' as const, shirtSize: 'L' },
-  { id: 'tm2', name: '李*华', phone: '139****6666', status: 'paid' as const, shirtSize: 'M' },
-  { id: 'tm3', name: '王*强', phone: '137****9999', status: 'paid' as const, shirtSize: 'XL' },
-  { id: 'tm4', name: '赵*云', phone: '136****5555', status: 'paid' as const, shirtSize: 'L' },
-  { id: 'tm5', name: '钱*佳', phone: '135****7777', status: 'paid' as const, shirtSize: 'M' }
+  { id: 'tm1', name: '张*明', phone: '138****8888', status: 'paid' as const, shirtSize: 'L', reviewStatus: 'passed' as const, refundStatus: 'none' as const },
+  { id: 'tm2', name: '李*华', phone: '139****6666', status: 'paid' as const, shirtSize: 'M', reviewStatus: 'passed' as const, refundStatus: 'none' as const },
+  { id: 'tm3', name: '王*强', phone: '137****9999', status: 'paid' as const, shirtSize: 'XL', reviewStatus: 'passed' as const, refundStatus: 'none' as const },
+  { id: 'tm4', name: '赵*云', phone: '136****5555', status: 'paid' as const, shirtSize: 'L', reviewStatus: 'passed' as const, refundStatus: 'none' as const },
+  { id: 'tm5', name: '钱*佳', phone: '135****7777', status: 'paid' as const, shirtSize: 'M', reviewStatus: 'passed' as const, refundStatus: 'none' as const }
 ];
 
 export const mockOrders: RegistrationOrder[] = [

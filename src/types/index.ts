@@ -66,6 +66,10 @@ export interface TeamMember {
   phone: string;
   status: 'registered' | 'pending' | 'paid';
   shirtSize: string;
+  lockedFields?: string[];
+  reviewStatus?: 'pending' | 'reviewing' | 'passed' | 'failed';
+  refundStatus?: 'none' | 'applying' | 'partial' | 'completed' | 'rejected';
+  refundAmount?: number;
 }
 
 export interface Team {
@@ -102,6 +106,11 @@ export interface PaymentRecord {
   refundedAt?: string;
   transactionNo?: string;
   remark?: string;
+  memberIds?: string[];
+  refundMode?: 'full' | 'member';
+  expectedArrivalDate?: string;
+  refundProgress?: string;
+  reviewDays?: number;
 }
 
 export interface RegistrationOrder {
@@ -162,10 +171,11 @@ export interface UserProfile {
 
 export interface Notification {
   id: string;
-  type: 'system' | 'review' | 'event' | 'pickup' | 'payment';
+  type: 'system' | 'review' | 'event' | 'pickup' | 'payment' | 'refund' | 'resubmit';
   title: string;
   content: string;
   orderId?: string;
+  anchor?: 'review' | 'payment' | 'refund' | 'timeline' | 'members' | 'materials';
   createdAt: string;
   isRead: boolean;
 }
