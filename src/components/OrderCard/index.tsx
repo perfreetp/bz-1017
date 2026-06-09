@@ -27,7 +27,7 @@ const statusTypeMap: Record<string, 'success' | 'warning' | 'error' | 'info' | '
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const handleCardClick = () => {
     console.log('[OrderCard] click order:', order.id);
-    navigateTo(`/pages/review/index?orderId=${order.id}`);
+    navigateTo(`/pages/orderDetail/index?orderId=${order.id}`);
   };
 
   const handlePay = (e) => {
@@ -59,7 +59,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
   const handleProgress = (e) => {
     e.stopPropagation();
-    navigateTo(`/pages/review/index?orderId=${order.id}`);
+    navigateTo(`/pages/orderDetail/index?orderId=${order.id}`);
   };
 
   const renderActions = () => {

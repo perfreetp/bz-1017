@@ -93,6 +93,17 @@ export type OrderStatus =
   | 'refund_rejected'
   | 'cancelled';
 
+export interface PaymentRecord {
+  id: string;
+  amount: number;
+  method: 'wechat' | 'alipay' | 'refund';
+  status: 'success' | 'pending' | 'failed';
+  paidAt?: string;
+  refundedAt?: string;
+  transactionNo?: string;
+  remark?: string;
+}
+
 export interface RegistrationOrder {
   id: string;
   orderNo: string;
@@ -105,6 +116,8 @@ export interface RegistrationOrder {
   status: OrderStatus;
   createdAt: string;
   paidAt?: string;
+  paymentRecords?: PaymentRecord[];
+  refundAmount?: number;
   reviewResult?: string;
   reviewComment?: string;
   reviewMaterials?: string[];
@@ -121,6 +134,7 @@ export interface RegistrationOrder {
     idCardLast4: string;
     shirtSize: string;
     phone: string;
+    gender?: string;
   };
   isTeamRegistration: boolean;
   teamName?: string;

@@ -1,21 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, Image } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useRouter, useDidShow } from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
-import { mockRaceAssistant, mockNotifications, mockOrders } from '../../data/orders';
+import { mockRaceAssistant } from '../../data/orders';
+import { useOrderStore } from '../../store/useOrderStore';
 import SectionHeader from '../../components/SectionHeader';
 import EmptyState from '../../components/EmptyState';
-import { countdownTo, showToast, copyToClipboard } from '../../utils';
-import { Notification } from '../../types';
+import { countdownTo, showToast, copyToClipboard, navigateTo } from '../../utils';
+import { Notification, RegistrationOrder } from '../../types';
 
 const AssistantPage: React.FC = () => {
-  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, total: 0 });
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
-  const [assistantInfo, setAssistantInfo] = useState(mockRaceAssistant);
+  const router = useRouter();
+  const orderIdParam = router.params.orderId || '';
 
-  const passedOrders = mockOrders.filter((o) => o.status === 'review_passed');
-  const hasUpcomingRace = passedOrders.length > 0;
+  const getOrderById = useOrderStore((s) => s.getOrderById);
+  const orders = useOrderStore((s) => s.orders);
+  const notifications = useOrderStore((s) => s.notifications);
+  const markNotifRead = useOrderStore((s) => s.markNotifRead);
+  const markAllNotifsRead = useOrderStore((s) => s.markAllNotifsRead);
+
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, total: 0 });
+
+  const passedOrder: RegistrationOrder | undefined = useMemo(() => {
+    if (orderIdParam) {
+      const o = getOrderById(orderIdParam);
+      if (o && o.status === 'review_passed') return o;
+      return undefined;
+    }
+    return orders.find((o) => o.status === 'review_passed');
+  }, [orderIdParam, orders, getOrderById]);
+
+  const hasUpcomingRace = !!passedOrder;
+
+  const assistantInfo = useMemo(() => {
+    if (passedOrder?.bibNumber) {
+      return {
+        ...mockRaceAssistant,
+        eventId: passedOrder.eventId,
+        eventTitle: passedOrder.eventTitle,
+        bibNumber: passedOrder.bibNumber,
+        qrCode: passedOrder.qrCode || mockRaceAssistant.qrCode,
+        pickupInfo: passedOrder.pickupInfo
+          ? {
+              ...mockRaceAssistant.pickupInfo,
+              date: passedOrder.pickupInfo.date,
+              timeRange: passedOrder.pickupInfo.time,
+              location: passedOrder.pickupInfo.location,
+              booth: passedOrder.pickupInfo.booth
+            }
+          : mockRaceAssistant.pickupInfo
+      };
+    }
+    return mockRaceAssistant;
+  }, [passedOrder]);
 
   useEffect(() => {
     const targetDate = '2026-11-15T07:30:00';
@@ -60,10 +98,14 @@ const AssistantPage: React.FC = () => {
     };
   }, []);
 
+  useDidShow(() => {
+    console.log('[Assistant] didShow, passed:', !!passedOrder, 'bib:', passedOrder?.bibNumber);
+  });
+
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const markAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+    markAllNotifsRead();
     showToast('已全部标记为已读', 'success');
   };
 
@@ -75,6 +117,45 @@ const AssistantPage: React.FC = () => {
     payment: '💰'
   };
 
+  const handleClickNotif = (notif: Notification) => {
+    markNotifRead(notif.id);
+    if (notif.orderId) {
+      if (notif.type === 'review') {
+        navigateTo(`/pages/review/index?orderId=${notif.orderId}`);
+      } else {
+        navigateTo(`/pages/orderDetail/index?orderId=${notif.orderId}`);
+      }
+    }
+  };
+
+  // 有 orderId 但该订单未审核通过，显示专属空状态
+  if (orderIdParam && !passedOrder) {
+    const order = getOrderById(orderIdParam);
+    return (
+      <ScrollView scrollY className={styles.page} style={{ height: '100vh' }}>
+        <View className="pageContainer">
+          <EmptyState
+            icon="⏳"
+            title={order ? '审核未完成，暂未生成参赛信息' : '订单不存在'}
+            description={
+              order
+                ? '当前订单状态：审核中，待审核通过后这里将自动展示参赛号、领物时间、检录二维码等参赛信息'
+                : '请返回列表后重新查看'
+            }
+            actionText={order ? '查看订单详情' : '返回报名列表'}
+            onAction={() => {
+              if (order) {
+                navigateTo(`/pages/orderDetail/index?orderId=${orderIdParam}`);
+              } else {
+                Taro.switchTab({ url: '/pages/orders/index' }).catch(() => {});
+              }
+            }}
+          />
+        </View>
+      </ScrollView>
+    );
+  }
+
   if (!hasUpcomingRace) {
     return (
       <ScrollView scrollY className={styles.page} style={{ height: '100vh' }}>
@@ -82,7 +163,7 @@ const AssistantPage: React.FC = () => {
           <EmptyState
             icon="🎯"
             title="暂无即将开始的赛事"
-            description="报名成功的赛事审核通过后，这里将为您提供专属参赛助手服务"
+            description="报名成功的赛事审核通过后，这里将为您提供专属参赛助手服务（参赛号、领物信息、检录二维码、赛前提醒等）"
             actionText="去报名"
             onAction={() => Taro.switchTab({ url: '/pages/home/index' })}
           />
@@ -227,11 +308,7 @@ const AssistantPage: React.FC = () => {
             <View
               key={notif.id}
               className={classnames(styles.notificationItem, !notif.isRead && styles.unread)}
-              onClick={() => {
-                setNotifications((prev) =>
-                  prev.map((n) => (n.id === notif.id ? { ...n, isRead: true } : n))
-                );
-              }}
+              onClick={() => handleClickNotif(notif)}
             >
               <View className={styles.notificationIcon}>
                 <Text>{notifIconMap[notif.type] || '📩'}</Text>

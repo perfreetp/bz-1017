@@ -1,5 +1,13 @@
 import { RegistrationOrder, Notification, RaceAssistantInfo } from '../types';
 
+const teamMembers = [
+  { id: 'tm1', name: '张*明', phone: '138****8888', status: 'paid' as const, shirtSize: 'L' },
+  { id: 'tm2', name: '李*华', phone: '139****6666', status: 'paid' as const, shirtSize: 'M' },
+  { id: 'tm3', name: '王*强', phone: '137****9999', status: 'paid' as const, shirtSize: 'XL' },
+  { id: 'tm4', name: '赵*云', phone: '136****5555', status: 'paid' as const, shirtSize: 'L' },
+  { id: 'tm5', name: '钱*佳', phone: '135****7777', status: 'paid' as const, shirtSize: 'M' }
+];
+
 export const mockOrders: RegistrationOrder[] = [
   {
     id: 'o001',
@@ -13,6 +21,9 @@ export const mockOrders: RegistrationOrder[] = [
     status: 'review_passed',
     createdAt: '2026-09-15 10:32',
     paidAt: '2026-09-15 10:35',
+    paymentRecords: [
+      { id: 'p001', amount: 200, method: 'wechat', status: 'success', paidAt: '2026-09-15 10:35', transactionNo: 'WX20260915103500123' }
+    ],
     reviewResult: 'pass',
     reviewComment: '资料审核通过，祝您取得好成绩！',
     bibNumber: 'A12345',
@@ -27,7 +38,8 @@ export const mockOrders: RegistrationOrder[] = [
       name: '张*明',
       idCardLast4: '1234',
       shirtSize: 'L',
-      phone: '138****8888'
+      phone: '138****8888',
+      gender: '男'
     },
     isTeamRegistration: false,
     lockedFields: ['realName', 'idCardNumber', 'gender', 'groupId']
@@ -44,11 +56,15 @@ export const mockOrders: RegistrationOrder[] = [
     status: 'reviewing',
     createdAt: '2026-09-20 14:18',
     paidAt: '2026-09-20 14:22',
+    paymentRecords: [
+      { id: 'p002', amount: 220, method: 'alipay', status: 'success', paidAt: '2026-09-20 14:22', transactionNo: 'ALI20260920142200456' }
+    ],
     runnerInfo: {
       name: '张*明',
       idCardLast4: '1234',
       shirtSize: 'L',
-      phone: '138****8888'
+      phone: '138****8888',
+      gender: '男'
     },
     isTeamRegistration: false,
     lockedFields: ['realName', 'idCardNumber']
@@ -65,14 +81,20 @@ export const mockOrders: RegistrationOrder[] = [
     status: 'paid',
     createdAt: '2026-09-25 09:45',
     paidAt: '2026-09-25 09:50',
+    paymentRecords: [
+      { id: 'p003', amount: 900, method: 'wechat', status: 'success', paidAt: '2026-09-25 09:50', transactionNo: 'WX20260925095000789' }
+    ],
     runnerInfo: {
       name: '张*明',
       idCardLast4: '1234',
       shirtSize: 'L',
-      phone: '138****8888'
+      phone: '138****8888',
+      gender: '男'
     },
     isTeamRegistration: true,
     teamName: '飞毛腿战队',
+    teamMemberCount: 5,
+    teamMembers: teamMembers,
     lockedFields: ['realName', 'idCardNumber', 'groupId']
   },
   {
@@ -87,6 +109,9 @@ export const mockOrders: RegistrationOrder[] = [
     status: 'review_failed',
     createdAt: '2026-08-10 16:20',
     paidAt: '2026-08-10 16:25',
+    paymentRecords: [
+      { id: 'p004', amount: 200, method: 'wechat', status: 'success', paidAt: '2026-08-10 16:25', transactionNo: 'WX20260810162500321' }
+    ],
     reviewResult: 'fail',
     reviewComment: '上传的成绩证明不清晰，请重新上传近2年内的完赛证书',
     reviewMaterials: ['成绩证明'],
@@ -94,7 +119,8 @@ export const mockOrders: RegistrationOrder[] = [
       name: '张*明',
       idCardLast4: '1234',
       shirtSize: 'L',
-      phone: '138****8888'
+      phone: '138****8888',
+      gender: '男'
     },
     isTeamRegistration: false,
     lockedFields: ['realName', 'idCardNumber']
@@ -111,11 +137,17 @@ export const mockOrders: RegistrationOrder[] = [
     status: 'refund_applying',
     createdAt: '2026-07-20 11:00',
     paidAt: '2026-07-20 11:05',
+    paymentRecords: [
+      { id: 'p005', amount: 200, method: 'wechat', status: 'success', paidAt: '2026-07-20 11:05', transactionNo: 'WX20260720110500111' },
+      { id: 'r001', amount: 200, method: 'refund', status: 'pending', refundedAt: '2026-09-30 10:00', remark: '工作时间冲突，无法参赛' }
+    ],
+    refundAmount: 200,
     runnerInfo: {
       name: '张*明',
       idCardLast4: '1234',
       shirtSize: 'XL',
-      phone: '138****8888'
+      phone: '138****8888',
+      gender: '男'
     },
     isTeamRegistration: false,
     lockedFields: ['realName', 'idCardNumber', 'groupId']
@@ -135,7 +167,8 @@ export const mockOrders: RegistrationOrder[] = [
       name: '张*明',
       idCardLast4: '1234',
       shirtSize: 'L',
-      phone: '138****8888'
+      phone: '138****8888',
+      gender: '男'
     },
     isTeamRegistration: false,
     lockedFields: []

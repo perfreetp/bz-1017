@@ -150,7 +150,7 @@ const PaymentPage: React.FC = () => {
 
       setTimeout(() => {
         if (targetOrderId) {
-          markOrderPaid(targetOrderId);
+          markOrderPaid(targetOrderId, payMethod);
         }
         showToast('支付成功！', 'success');
 

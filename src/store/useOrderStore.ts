@@ -124,16 +124,28 @@ export const useOrderStore = create<OrderStore>()(
         }));
       },
 
-      markOrderPaid: (orderId) => {
+      markOrderPaid: (orderId, payMethod = 'wechat') => {
         const now = new Date();
         const paidAt = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
         const order = get().getOrderById(orderId);
         const extra: Partial<RegistrationOrder> = { paidAt };
 
-        if (order?.isTeamRegistration && order.teamMembers && order.teamMembers.length > 0) {
-          extra.teamMembers = order.teamMembers.map((m) => ({ ...m, status: 'paid' as const }));
-          console.log('[Store] markOrderPaid team:', order.teamMembers.length, 'members set to paid');
+        if (order) {
+          const payRecord = {
+            id: `p${Date.now()}`,
+            amount: order.amount,
+            method: payMethod as 'wechat' | 'alipay',
+            status: 'success' as const,
+            paidAt,
+            transactionNo: `${payMethod.toUpperCase()}${Date.now()}`
+          };
+          extra.paymentRecords = [...(order.paymentRecords || []), payRecord];
+
+          if (order.isTeamRegistration && order.teamMembers && order.teamMembers.length > 0) {
+            extra.teamMembers = order.teamMembers.map((m) => ({ ...m, status: 'paid' as const }));
+            console.log('[Store] markOrderPaid team:', order.teamMembers.length, 'members set to paid');
+          }
         }
 
         get().updateOrderStatus(orderId, 'paid', extra);
@@ -147,7 +159,23 @@ export const useOrderStore = create<OrderStore>()(
       },
 
       submitRefund: (orderId, reason) => {
-        get().updateOrderStatus(orderId, 'refund_applying');
+        const order = get().getOrderById(orderId);
+        if (order) {
+          const refundRecord = {
+            id: `r${Date.now()}`,
+            amount: order.amount,
+            method: 'refund' as const,
+            status: 'pending' as const,
+            refundedAt: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`,
+            remark: reason
+          };
+          get().updateOrderStatus(orderId, 'refund_applying', {
+            paymentRecords: [...(order.paymentRecords || []), refundRecord],
+            refundAmount: order.amount
+          });
+        } else {
+          get().updateOrderStatus(orderId, 'refund_applying');
+        }
         console.log('[Store] submitRefund:', orderId, reason);
       },
 

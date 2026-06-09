@@ -9,7 +9,8 @@ export default defineAppConfig({
     'pages/team/index',
     'pages/payment/index',
     'pages/refund/index',
-    'pages/review/index'
+    'pages/review/index',
+    'pages/orderDetail/index'
   ],
   window: {
     backgroundTextStyle: 'light',
