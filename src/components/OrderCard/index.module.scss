@@ -1,0 +1,206 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.995);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-md;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.orderNo {
+  display: flex;
+  align-items: center;
+}
+
+.orderNoLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.orderNoValue {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-family: monospace;
+}
+
+.eventInfo {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.eventCover {
+  width: 180rpx;
+  height: 120rpx;
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.eventDetail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.eventTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  line-height: 1.3;
+}
+
+.groupName {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: 6rpx;
+  @include text-ellipsis;
+}
+
+.runnerInfo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4rpx;
+  margin-top: 6rpx;
+
+  Text {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+}
+
+.separator {
+  margin: 0 4rpx;
+}
+
+.teamTag {
+  color: $color-secondary !important;
+  background-color: rgba(46, 134, 222, 0.1);
+  padding: 2rpx 10rpx;
+  border-radius: $radius-xs;
+}
+
+.failNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  background-color: $color-bg-tag-error;
+  border-radius: $radius-md;
+}
+
+.failIcon {
+  flex-shrink: 0;
+  font-size: $font-size-md;
+}
+
+.failText {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-error;
+  line-height: 1.5;
+}
+
+.bibNotice {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  border-radius: $radius-md;
+}
+
+.bibLabel {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.bibValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  letter-spacing: 4rpx;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: $spacing-lg;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.amountWrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.amountLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.amountValue {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+}
+
+.actions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.actionBtn {
+  @include button-reset;
+  height: $button-height-sm;
+  padding: 0 $spacing-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  border: none;
+
+  Text {
+    color: $color-text-white;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.btnOutline {
+  background: transparent;
+  border: 1rpx solid $color-border;
+
+  Text {
+    color: $color-text-secondary;
+  }
+}

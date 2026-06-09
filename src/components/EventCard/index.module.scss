@@ -1,0 +1,170 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+    box-shadow: $shadow-card-hover;
+  }
+}
+
+.coverWrapper {
+  position: relative;
+  width: 100%;
+  height: 320rpx;
+  overflow: hidden;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+}
+
+.statusOverlay {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  z-index: 2;
+}
+
+.featureTags {
+  position: absolute;
+  left: 20rpx;
+  bottom: 20rpx;
+  display: flex;
+  gap: 12rpx;
+  z-index: 2;
+}
+
+.featureTag {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 6rpx 16rpx;
+  border-radius: $radius-sm;
+
+  Text {
+    color: $color-text-white;
+    font-size: $font-size-xs;
+  }
+}
+
+.content {
+  padding: $spacing-lg;
+}
+
+.title {
+  display: block;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  line-height: 1.4;
+  @include text-ellipsis;
+}
+
+.subtitle {
+  display: block;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: $spacing-xs;
+  @include text-ellipsis;
+}
+
+.infoRow {
+  margin-top: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.infoIcon {
+  font-size: $font-size-md;
+  flex-shrink: 0;
+}
+
+.infoText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  flex: 1;
+  @include text-ellipsis;
+}
+
+.bottomRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: $spacing-lg;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.priceWrapper {
+  display: flex;
+  align-items: baseline;
+}
+
+.priceSymbol {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.price {
+  font-size: $font-size-xxl;
+  color: $color-primary;
+  font-weight: $font-weight-bold;
+  line-height: 1;
+  margin-left: 2rpx;
+}
+
+.priceSuffix {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-left: 4rpx;
+}
+
+.quotaWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+  min-width: 200rpx;
+}
+
+.quotaBar {
+  width: 180rpx;
+  height: 8rpx;
+  background-color: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.quotaFill {
+  height: 100%;
+  border-radius: $radius-round;
+  transition: width $transition-base;
+}
+
+.quotaHigh {
+  background-color: $color-success;
+}
+
+.quotaMid {
+  background-color: $color-warning;
+}
+
+.quotaLow {
+  background-color: $color-error;
+}
+
+.quotaText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}

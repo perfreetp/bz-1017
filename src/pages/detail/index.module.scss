@@ -1,0 +1,507 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  padding-bottom: 180rpx;
+}
+
+.cover {
+  width: 100%;
+  height: 420rpx;
+  position: relative;
+  margin: 0 (-$page-padding);
+}
+
+.coverImage {
+  width: 100%;
+  height: 100%;
+}
+
+.coverOverlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $spacing-xl $page-padding $spacing-lg;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+}
+
+.coverTitle {
+  display: block;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  line-height: 1.3;
+  margin-bottom: $spacing-xs;
+}
+
+.coverSubtitle {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.featureRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+}
+
+.featureTag {
+  padding: 6rpx 16rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-sm;
+  backdrop-filter: blur(10px);
+
+  Text {
+    font-size: $font-size-xs;
+    color: $color-text-white;
+  }
+}
+
+.infoCard {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-top: -40rpx;
+  margin-bottom: $spacing-md;
+  position: relative;
+  z-index: 10;
+  box-shadow: $shadow-float;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+  padding: $spacing-sm 0;
+
+  & + & {
+    border-top: 1rpx solid $color-divider;
+    margin-top: $spacing-sm;
+    padding-top: $spacing-md;
+  }
+}
+
+.infoIcon {
+  width: 56rpx;
+  height: 56rpx;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 143, 94, 0.1) 100%);
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
+
+.infoTextWrapper {
+  flex: 1;
+}
+
+.infoLabel {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 6rpx;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  line-height: 1.5;
+  font-weight: $font-weight-medium;
+}
+
+.section {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-md;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.sectionIcon {
+  font-size: $font-size-lg;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  flex: 1;
+}
+
+.descText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.8;
+}
+
+.groupCard {
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  transition: all $transition-base;
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.selected {
+    border-color: $color-primary;
+    background-color: rgba(255, 107, 53, 0.03);
+    box-shadow: 0 0 0 4rpx rgba(255, 107, 53, 0.1);
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    background-color: $color-bg-hover;
+  }
+}
+
+.groupCheck {
+  position: absolute;
+  top: $spacing-md;
+  right: $spacing-md;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  border: 2rpx solid $color-border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  color: transparent;
+
+  .selected & {
+    background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+    border-color: $color-primary;
+    color: $color-text-white;
+  }
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+  padding-right: 60rpx;
+}
+
+.groupName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  line-height: 1.3;
+}
+
+.groupPrice {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.groupPriceSym {
+  font-size: $font-size-sm;
+  margin-right: 2rpx;
+}
+
+.groupMeta {
+  display: flex;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-sm;
+}
+
+.groupMetaItem {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.groupMetaValue {
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.groupDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  line-height: 1.5;
+  padding-top: $spacing-sm;
+  border-top: 1rpx dashed $color-border;
+}
+
+.quotaBar {
+  margin-top: $spacing-md;
+}
+
+.quotaLabel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: $spacing-xs;
+
+  Text {
+    font-size: $font-size-xs;
+  }
+}
+
+.quotaTextLeft {
+  color: $color-text-secondary;
+}
+
+.quotaTextRight {
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.quotaProgress {
+  width: 100%;
+  height: 12rpx;
+  background-color: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.quotaFill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-primary-light, $color-primary);
+  border-radius: $radius-round;
+  transition: width $transition-slow;
+}
+
+.ruleList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ruleItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  padding: $spacing-sm 0;
+
+  & + & {
+    border-top: 1rpx solid $color-divider;
+  }
+}
+
+.ruleIndex {
+  width: 40rpx;
+  height: 40rpx;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  Text {
+    font-size: $font-size-xs;
+    color: $color-text-white;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.ruleText {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.7;
+  padding-top: 4rpx;
+}
+
+.routeImage {
+  width: 100%;
+  height: 400rpx;
+  border-radius: $radius-md;
+}
+
+.medalWrapper {
+  display: flex;
+  gap: $spacing-lg;
+  align-items: center;
+}
+
+.medalImage {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.medalInfo {
+  flex: 1;
+}
+
+.medalTitle {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.medalDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.faqItem {
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.faqQ {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.faqATag {
+  background-color: rgba(0, 184, 148, 0.1);
+  padding: 2rpx 12rpx;
+  border-radius: $radius-xs;
+  flex-shrink: 0;
+
+  Text {
+    font-size: $font-size-xs;
+    color: $color-success;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.faqQTag {
+  background-color: $color-bg-tag-open;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-xs;
+  flex-shrink: 0;
+
+  Text {
+    font-size: $font-size-xs;
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.faqText {
+  flex: 1;
+  font-size: $font-size-sm;
+  line-height: 1.6;
+}
+
+.faqQText {
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.faqAText {
+  color: $color-text-secondary;
+}
+
+.bottomBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $color-bg-card;
+  padding: $spacing-md $page-padding calc($spacing-md + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  z-index: 100;
+}
+
+.bottomInfo {
+  flex: 1;
+}
+
+.bottomLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.bottomPrice {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+
+  &::before {
+    content: '¥';
+    font-size: $font-size-sm;
+    margin-right: 4rpx;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.bottomGroup {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  margin-top: 4rpx;
+}
+
+.actionBtns {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.actionBtn {
+  @include button-reset;
+  height: $button-height-lg;
+  padding: 0 $spacing-xl;
+  border-radius: $radius-button;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+
+  &.secondary {
+    background-color: transparent;
+    border: 2rpx solid $color-primary;
+
+    Text {
+      color: $color-primary;
+      font-weight: $font-weight-medium;
+      font-size: $font-size-md;
+    }
+  }
+
+  &.primary {
+    background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+    box-shadow: 0 4rpx 16rpx rgba(255, 107, 53, 0.3);
+
+    Text {
+      color: $color-text-white;
+      font-weight: $font-weight-semibold;
+      font-size: $font-size-md;
+    }
+  }
+
+  &.disabled {
+    background-color: $color-text-disabled;
+    box-shadow: none;
+
+    Text {
+      color: $color-text-white;
+    }
+  }
+}

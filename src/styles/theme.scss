@@ -1,0 +1,50 @@
+// ============================================
+// 马拉松报名小程序 - 主题配色变量
+// ============================================
+
+// 品牌主题色：活力橙 - 代表马拉松的激情与能量
+$color-primary: #FF6B35;
+$color-primary-light: #FF8F5E;
+$color-primary-dark: #E55A2B;
+
+// 辅助色：专业蓝 - 体现赛事的专业与信任
+$color-secondary: #2E86DE;
+$color-secondary-light: #54A0FF;
+$color-secondary-dark: #1E6FBA;
+
+// 功能色 - 语义色
+$color-success: #00B894;
+$color-success-light: #55EFC4;
+$color-warning: #F39C12;
+$color-warning-light: #FDCB6E;
+$color-error: #E74C3C;
+$color-error-light: #FF7675;
+$color-info: #2E86DE;
+
+// 赛事状态专用色
+$color-event-open: #FF6B35;
+$color-event-full: #E74C3C;
+$color-event-closed: #A0AEC0;
+$color-event-upcoming: #0984E3;
+
+// 背景色
+$color-bg-page: #F8F9FA;
+$color-bg-page-gradient-start: #FFF5F0;
+$color-bg-card: #FFFFFF;
+$color-bg-hover: #F1F3F5;
+$color-bg-tag-open: rgba(255, 107, 53, 0.1);
+$color-bg-tag-success: rgba(0, 184, 148, 0.1);
+$color-bg-tag-warning: rgba(243, 156, 18, 0.1);
+$color-bg-tag-error: rgba(231, 76, 60, 0.1);
+
+// 文本色
+$color-text-primary: #1A1A2E;
+$color-text-secondary: #57606F;
+$color-text-tertiary: #A0AEC0;
+$color-text-disabled: #CBD5E0;
+$color-text-white: #FFFFFF;
+$color-text-orange: #FF6B35;
+
+// 边框色
+$color-border: #E2E8F0;
+$color-divider: #EDF2F7;

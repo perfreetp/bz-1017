@@ -1,0 +1,343 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+}
+
+.heroCard {
+  background: linear-gradient(135deg, #667eea 0%, #FF6B35 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-lg;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 53, 0.3);
+}
+
+.heroBg {
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300rpx;
+  height: 300rpx;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.heroLabel {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: $spacing-sm;
+}
+
+.heroTitle {
+  display: block;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  line-height: 1.3;
+  margin-bottom: $spacing-lg;
+  @include text-ellipsis-multi(2);
+}
+
+.countdown {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.countdownItem {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-md;
+  padding: $spacing-sm 0;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.countdownNum {
+  display: block;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  line-height: 1.2;
+}
+
+.countdownUnit {
+  display: block;
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4rpx;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.infoCard {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.infoCardIcon {
+  font-size: 40rpx;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.infoCardLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 6rpx;
+  display: block;
+}
+
+.infoCardValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  line-height: 1.4;
+  display: block;
+}
+
+.qrSection {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-card;
+  text-align: center;
+}
+
+.qrTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.qrSubtitle {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-xl;
+  display: block;
+}
+
+.qrWrapper {
+  width: 360rpx;
+  height: 360rpx;
+  margin: 0 auto $spacing-md;
+  padding: 24rpx;
+  background-color: #ffffff;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: inset 0 0 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.qrCode {
+  width: 100%;
+  height: 100%;
+}
+
+.qrCodeData {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-family: monospace;
+  letter-spacing: 2rpx;
+}
+
+.qrTips {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-lg;
+  line-height: 1.6;
+}
+
+.pickupSection {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.pickupRow {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.pickupIcon {
+  font-size: 36rpx;
+  flex-shrink: 0;
+  width: 56rpx;
+  text-align: center;
+}
+
+.pickupContent {
+  flex: 1;
+}
+
+.pickupLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 6rpx;
+  display: block;
+}
+
+.pickupValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  line-height: 1.5;
+}
+
+.docsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+}
+
+.docTag {
+  background-color: $color-bg-tag-open;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-sm;
+
+  Text {
+    font-size: $font-size-xs;
+    color: $color-primary;
+  }
+}
+
+.reminders {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.reminderItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.reminderBullet {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  margin-top: 16rpx;
+  flex-shrink: 0;
+}
+
+.reminderText {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.notificationHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.notificationTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.notificationBadge {
+  background-color: $color-error;
+  color: $color-text-white;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+}
+
+.notificationList {
+  margin-bottom: $spacing-lg;
+}
+
+.notificationItem {
+  display: flex;
+  gap: $spacing-md;
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-sm;
+  box-shadow: $shadow-card;
+
+  &.unread {
+    background-color: #FFFBF8;
+    border-left: 6rpx solid $color-primary;
+  }
+}
+
+.notificationIcon {
+  font-size: 40rpx;
+  flex-shrink: 0;
+  width: 64rpx;
+  height: 64rpx;
+  background-color: $color-bg-hover;
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationItemTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.notificationContent {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  line-height: 1.5;
+  margin-bottom: 8rpx;
+  display: block;
+  @include text-ellipsis-multi(2);
+}
+
+.notificationTime {
+  font-size: 20rpx;
+  color: $color-text-tertiary;
+}

@@ -1,0 +1,248 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+}
+
+.profileHeader {
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  padding: $spacing-xl $page-padding 120rpx;
+  margin: 0 (-$page-padding) $spacing-lg;
+  border-bottom-left-radius: 40rpx;
+  border-bottom-right-radius: 40rpx;
+}
+
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: $radius-lg;
+  backdrop-filter: blur(10px);
+}
+
+.avatar {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: $radius-round;
+  border: 4rpx solid rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+  background-color: $color-bg-card;
+}
+
+.profileInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.nickname {
+  display: block;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  line-height: 1.3;
+  @include text-ellipsis;
+}
+
+.userMeta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-xs;
+  flex-wrap: wrap;
+}
+
+.metaTag {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4rpx 16rpx;
+  border-radius: $radius-round;
+
+  Text {
+    font-size: $font-size-xs;
+    color: $color-text-white;
+  }
+}
+
+.statsCard {
+  display: flex;
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg 0;
+  margin-top: -80rpx;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-float;
+  position: relative;
+  z-index: 5;
+}
+
+.statsCol {
+  flex: 1;
+  text-align: center;
+
+  & + & {
+    border-left: 1rpx solid $color-divider;
+  }
+}
+
+.statsValue {
+  display: block;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  line-height: 1.2;
+}
+
+.statsUnit {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-left: 4rpx;
+}
+
+.statsLabel {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 6rpx;
+}
+
+.section {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.sectionTitle {
+  padding: $spacing-md $spacing-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md $spacing-lg;
+  transition: background-color $transition-fast;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:active {
+    background-color: $color-bg-hover;
+  }
+}
+
+.menuIcon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: $radius-md;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 143, 94, 0.1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+
+  Text {
+    font-size: 32rpx;
+  }
+}
+
+.menuContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.menuTitle {
+  display: block;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: 1.3;
+}
+
+.menuSubtitle {
+  display: block;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 6rpx;
+}
+
+.menuArrow {
+  font-size: 32rpx;
+  color: $color-text-tertiary;
+  margin-left: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.menuBadge {
+  background-color: $color-error;
+  color: $color-text-white;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+  margin-right: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.recordsCard {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.recordsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.recordsTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.recordItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.recordLabel {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.recordDist {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.recordTime {
+  font-size: $font-size-md;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  font-family: monospace;
+}

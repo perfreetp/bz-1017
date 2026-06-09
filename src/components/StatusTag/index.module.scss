@@ -1,0 +1,86 @@
+@use '@/styles/variables.scss' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+
+  &.sizeMd {
+    padding: 8rpx 24rpx;
+  }
+}
+
+.text {
+  font-size: $font-size-xs;
+  line-height: 1;
+}
+
+.sizeMd .text {
+  font-size: $font-size-sm;
+}
+
+.open {
+  background-color: $color-bg-tag-open;
+  .text {
+    color: $color-event-open;
+  }
+}
+
+.full {
+  background-color: $color-bg-tag-error;
+  .text {
+    color: $color-event-full;
+  }
+}
+
+.closed {
+  background-color: $color-bg-hover;
+  .text {
+    color: $color-text-tertiary;
+  }
+}
+
+.upcoming {
+  background-color: rgba(9, 132, 227, 0.1);
+  .text {
+    color: $color-event-upcoming;
+  }
+}
+
+.success {
+  background-color: $color-bg-tag-success;
+  .text {
+    color: $color-success;
+  }
+}
+
+.warning {
+  background-color: $color-bg-tag-warning;
+  .text {
+    color: $color-warning;
+  }
+}
+
+.error {
+  background-color: $color-bg-tag-error;
+  .text {
+    color: $color-error;
+  }
+}
+
+.info {
+  background-color: rgba(46, 134, 222, 0.1);
+  .text {
+    color: $color-secondary;
+  }
+}
+
+.default {
+  background-color: $color-bg-hover;
+  .text {
+    color: $color-text-secondary;
+  }
+}
