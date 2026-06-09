@@ -124,6 +124,8 @@ export interface RegistrationOrder {
   };
   isTeamRegistration: boolean;
   teamName?: string;
+  teamMemberCount?: number;
+  teamMembers?: TeamMember[];
   lockedFields: string[];
 }
 

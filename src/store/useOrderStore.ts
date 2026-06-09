@@ -30,17 +30,10 @@ const taroStorage = {
   }
 };
 
-export interface TeamRegistrationInfo {
-  teamName: string;
-  members: TeamMember[];
-  totalAmount: number;
-}
-
 interface OrderStore {
   orders: RegistrationOrder[];
   notifications: Notification[];
   raceAssistant: RaceAssistantInfo;
-  pendingTeams: Record<string, TeamRegistrationInfo>;
 
   addOrder: (order: RegistrationOrder) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus, extra?: Partial<RegistrationOrder>) => void;
@@ -80,11 +73,10 @@ export const useOrderStore = create<OrderStore>()(
       orders: [...mockOrders],
       notifications: [...mockNotifications],
       raceAssistant: { ...mockRaceAssistant },
-      pendingTeams: {},
 
       addOrder: (order) => {
         set((state) => ({ orders: [order, ...state.orders] }));
-        console.log('[Store] addOrder:', order.id, order.status);
+        console.log('[Store] addOrder:', order.id, order.status, 'teamMembers:', order.teamMembers?.length);
       },
 
       updateOrderStatus: (orderId, status, extra) => {
@@ -120,20 +112,32 @@ export const useOrderStore = create<OrderStore>()(
       updateTeamMembers: (orderId, members) => {
         console.log('[Store] updateTeamMembers:', orderId, members.length);
         set((state) => ({
-          pendingTeams: {
-            ...state.pendingTeams,
-            [orderId]: {
-              ...state.pendingTeams[orderId],
-              members
-            }
-          }
+          orders: state.orders.map((o) =>
+            o.id === orderId
+              ? {
+                  ...o,
+                  teamMembers: members,
+                  teamMemberCount: members.length
+                }
+              : o
+          )
         }));
       },
 
       markOrderPaid: (orderId) => {
         const now = new Date();
         const paidAt = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        get().updateOrderStatus(orderId, 'paid', { paidAt });
+
+        const order = get().getOrderById(orderId);
+        const extra: Partial<RegistrationOrder> = { paidAt };
+
+        if (order?.isTeamRegistration && order.teamMembers && order.teamMembers.length > 0) {
+          extra.teamMembers = order.teamMembers.map((m) => ({ ...m, status: 'paid' as const }));
+          console.log('[Store] markOrderPaid team:', order.teamMembers.length, 'members set to paid');
+        }
+
+        get().updateOrderStatus(orderId, 'paid', extra);
+
         setTimeout(() => {
           get().updateOrderStatus(orderId, 'pending_review');
           setTimeout(() => {

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import styles from './index.module.scss';
 import { useOrderStore, generateOrderNo, maskPhone, maskIdCard } from '../../store/useOrderStore';
 import { mockEvents } from '../../data/events';
-import { mockTeams, mockUser, shirtSizes } from '../../data/user';
+import { mockUser, shirtSizes } from '../../data/user';
 import { MarathonEvent, EventGroup, RegistrationOrder, TeamMember } from '../../types';
 import { showToast, navigateTo } from '../../utils';
 
@@ -42,8 +42,17 @@ const PaymentPage: React.FC = () => {
   }, [event, groupId, existingOrder]);
 
   const unitPrice = group?.price || 0;
-  const finalAmount = existingOrder?.amount || totalAmountParam || unitPrice * memberCountParam;
-  const finalMemberCount = existingOrder?.isTeamRegistration ? memberCountParam : memberCountParam;
+  const isTeamOrder = existingOrder?.isTeamRegistration || mode === 'team';
+
+  const finalAmount = existingOrder?.amount
+    || totalAmountParam
+    || (isTeamOrder ? unitPrice * memberCountParam : unitPrice);
+
+  const finalMemberCount = existingOrder?.isTeamRegistration
+    ? (existingOrder.teamMemberCount || existingOrder.teamMembers?.length || 1)
+    : (mode === 'team' ? memberCountParam : 1);
+
+  const finalTeamName = existingOrder?.teamName || teamNameParam || '';
 
   const [payMethod, setPayMethod] = useState<PayMethod>('wechat');
   const [countdown, setCountdown] = useState(30 * 60);
@@ -63,28 +72,35 @@ const PaymentPage: React.FC = () => {
   };
 
   const teamMembers = useMemo<TeamMember[]>(() => {
-    if (existingOrder?.isTeamRegistration) {
-      const team = mockTeams.find((t) => t.eventId === existingOrder.eventId && t.leaderId === mockUser.id);
-      return team?.members || [];
+    if (existingOrder?.isTeamRegistration && existingOrder.teamMembers && existingOrder.teamMembers.length > 0) {
+      console.log('[Payment] use store teamMembers:', existingOrder.teamMembers.length);
+      return existingOrder.teamMembers;
     }
     if (mode === 'team' && memberCountParam > 1) {
-      const team = mockTeams.find((t) => t.name === teamNameParam);
-      if (team) return team.members;
       return [
-        { id: 'self', name: mockUser.realName, phone: mockUser.phone, status: 'registered', shirtSize: mockUser.shirtSize },
+        { id: 'self', name: mockUser.realName, phone: mockUser.phone, status: 'pending', shirtSize: mockUser.shirtSize },
         ...Array.from({ length: memberCountParam - 1 }, (_, i) => ({
           id: `m${i}`,
           name: `成员${i + 1}`,
           phone: `138****${String(1000 + i).padStart(4, '0')}`,
-          status: 'registered' as const,
+          status: 'pending' as const,
           shirtSize: shirtSizes[(i + 2) % shirtSizes.length]?.value || 'L'
         }))
       ];
     }
     return [
-      { id: 'self', name: mockUser.realName, phone: mockUser.phone, status: 'registered', shirtSize: mockUser.shirtSize }
+      { id: 'self', name: mockUser.realName, phone: mockUser.phone, status: 'pending', shirtSize: mockUser.shirtSize }
     ];
-  }, [mode, existingOrder, memberCountParam, teamNameParam]);
+  }, [mode, existingOrder, memberCountParam]);
+
+  const memberStatusStyle = (status: string) => {
+    const map: Record<string, { bg: string; text: string; color: string }> = {
+      registered: { bg: '#EBF8FF', text: '已报名', color: '#3182CE' },
+      pending: { bg: '#FFFAF0', text: '待支付', color: '#DD6B20' },
+      paid: { bg: '#F0FFF4', text: '已支付', color: '#38A169' }
+    };
+    return map[status] || map.pending;
+  };
 
   const handlePay = async () => {
     if (isPaying) return;
@@ -101,6 +117,10 @@ const PaymentPage: React.FC = () => {
 
       let targetOrderId = orderId;
       if (!existingOrder) {
+        const finalMembers: TeamMember[] = isTeamOrder
+          ? teamMembers.map((m) => ({ ...m, status: 'pending' as const }))
+          : [];
+
         const newOrder: RegistrationOrder = {
           id: `o${Date.now()}`,
           orderNo: generateOrderNo(event.id),
@@ -118,17 +138,14 @@ const PaymentPage: React.FC = () => {
             shirtSize: mockUser.shirtSize,
             phone: maskPhone(mockUser.phone)
           },
-          isTeamRegistration: mode === 'team',
-          teamName: mode === 'team' ? (teamNameParam || '我的团队') : undefined,
+          isTeamRegistration: isTeamOrder,
+          teamName: isTeamOrder ? (finalTeamName || '我的团队') : undefined,
+          teamMemberCount: isTeamOrder ? finalMemberCount : undefined,
+          teamMembers: isTeamOrder ? finalMembers : undefined,
           lockedFields: []
         };
         addOrder(newOrder);
         targetOrderId = newOrder.id;
-
-        if (mode === 'team') {
-          const memberList = teamMembers.map((m) => ({ ...m, status: 'pending' as const }));
-          updateTeamMembers(newOrder.id, memberList);
-        }
       }
 
       setTimeout(() => {
@@ -186,19 +203,17 @@ const PaymentPage: React.FC = () => {
         </View>
         <View className={styles.orderRow}>
           <Text className={styles.orderLabel}>报名类型</Text>
-          <Text className={styles.orderValue}>{mode === 'team' || existingOrder?.isTeamRegistration ? '团队报名' : '个人报名'}</Text>
+          <Text className={styles.orderValue}>{isTeamOrder ? '团队报名' : '个人报名'}</Text>
         </View>
-        {(mode === 'team' || existingOrder?.isTeamRegistration) && (
+        {isTeamOrder && (
           <View className={styles.orderRow}>
             <Text className={styles.orderLabel}>团队名称</Text>
-            <Text className={styles.orderValue}>{teamNameParam || existingOrder?.teamName || '--'}</Text>
+            <Text className={styles.orderValue}>{finalTeamName || '--'}</Text>
           </View>
         )}
         <View className={styles.orderRow}>
           <Text className={styles.orderLabel}>参赛人数</Text>
-          <Text className={styles.orderValue}>
-            {existingOrder?.isTeamRegistration ? finalMemberCount : mode === 'team' ? memberCountParam : '1'} 人
-          </Text>
+          <Text className={styles.orderValue}>{finalMemberCount} 人</Text>
         </View>
         <View className={styles.orderRow}>
           <Text className={styles.orderLabel}>报名单价</Text>
@@ -214,26 +229,34 @@ const PaymentPage: React.FC = () => {
         <View className={styles.sectionHeader}>
           <View className={styles.sectionIcon}>👥</View>
           <Text className={styles.sectionTitle}>
-            {mode === 'team' || existingOrder?.isTeamRegistration ? '团队成员' : '参赛人员'}
+            {isTeamOrder ? '团队成员' : '参赛人员'}
           </Text>
         </View>
 
-        {teamMembers.map((member, index) => (
-          <View key={member.id} className={styles.runnerCard}>
-            <View className={styles.runnerAvatar}>
-              {member.name.charAt(0)}
-            </View>
-            <View className={styles.runnerInfo}>
-              <View className={styles.runnerName}>
-                {member.name}
-                {index === 0 && <Text className={styles.leaderBadge}>队长</Text>}
+        {teamMembers.map((member, index) => {
+          const style = memberStatusStyle(member.status);
+          return (
+            <View key={member.id} className={styles.runnerCard}>
+              <View className={styles.runnerAvatar}>
+                {member.name.charAt(0)}
               </View>
-              <View className={styles.runnerDetail}>
-                {member.phone} · T恤 {member.shirtSize}码
+              <View className={styles.runnerInfo}>
+                <View className={styles.runnerName}>
+                  {member.name}
+                  {index === 0 && <Text className={styles.leaderBadge}>队长</Text>}
+                  {isTeamOrder && (
+                    <Text className={styles.memberStatusBadge} style={{ background: style.bg, color: style.color }}>
+                      {style.text}
+                    </Text>
+                  )}
+                </View>
+                <View className={styles.runnerDetail}>
+                  {member.phone} · T恤 {member.shirtSize}码
+                </View>
               </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
 
       <View className={styles.section}>

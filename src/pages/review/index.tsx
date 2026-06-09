@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
-import { useRouter } from '@tarojs/taro';
+import Taro, { useRouter } from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
 import { useOrderStore } from '../../store/useOrderStore';
@@ -126,7 +126,9 @@ const ReviewPage: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigateTo('/pages/orders/index');
+    Taro.switchTab({ url: '/pages/orders/index' }).catch(() => {
+      navigateTo('/pages/orders/index');
+    });
   };
 
   if (!order) {

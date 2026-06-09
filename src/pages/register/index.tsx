@@ -213,7 +213,9 @@ const RegisterPage: React.FC = () => {
         showToast('资料已重新提交', 'success');
 
         setTimeout(() => {
-          navigateTo(`/pages/review/index?orderId=${existingOrder.id}`);
+          Taro.switchTab({ url: '/pages/orders/index' }).catch(() => {
+            navigateTo('/pages/orders/index');
+          });
         }, 1500);
       }, 1000);
     }

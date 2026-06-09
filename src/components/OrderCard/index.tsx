@@ -32,9 +32,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
   const handlePay = (e) => {
     e.stopPropagation();
-    navigateTo(
-      `/pages/payment/index?orderId=${order.id}&eventId=${order.eventId}&groupId=${order.groupId}&mode=${order.isTeamRegistration ? 'team' : 'single'}`
-    );
+    const baseUrl = `/pages/payment/index?orderId=${order.id}&eventId=${order.eventId}&groupId=${order.groupId}&mode=${order.isTeamRegistration ? 'team' : 'single'}`;
+    if (order.isTeamRegistration) {
+      navigateTo(
+        `${baseUrl}&teamName=${encodeURIComponent(order.teamName || '')}&memberCount=${order.teamMemberCount || order.teamMembers?.length || 1}&totalAmount=${order.amount}`
+      );
+    } else {
+      navigateTo(baseUrl);
+    }
   };
 
   const handleRefund = (e) => {
@@ -124,6 +129,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
               <>
                 <Text className={styles.separator}>·</Text>
                 <Text className={styles.teamTag}>{order.teamName}</Text>
+                <Text className={styles.separator}>·</Text>
+                <Text className={styles.teamSizeTag}>👥 {order.teamMemberCount || order.teamMembers?.length || 1}人</Text>
               </>
             )}
           </View>

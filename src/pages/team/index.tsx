@@ -211,6 +211,7 @@ const TeamPage: React.FC = () => {
       setTimeout(() => {
         Taro.hideLoading();
 
+        const membersWithStatus = members.map((m) => ({ ...m, status: 'pending' as const }));
         const newOrder: RegistrationOrder = {
           id: `o${Date.now()}`,
           orderNo: generateOrderNo(event.id),
@@ -230,11 +231,12 @@ const TeamPage: React.FC = () => {
           },
           isTeamRegistration: true,
           teamName: teamName,
+          teamMemberCount: members.length,
+          teamMembers: membersWithStatus,
           lockedFields: []
         };
 
         addOrder(newOrder);
-        updateTeamMembers(newOrder.id, members.map((m) => ({ ...m, status: 'pending' as const })));
 
         showToast('团队报名提交成功', 'success');
         setTimeout(() => {
